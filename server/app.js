@@ -1,6 +1,8 @@
 const Koa = require('koa');
 const router = require('koa-router')();
 
+const Article = require('./my-schema');
+
 const app = new Koa();
 
 app.use(async (ctx, next) => {
@@ -16,6 +18,15 @@ router.get('/hello/:name', async (ctx, next) => {
 router.get('/', async (ctx, next) => {
   ctx.response.body = `<h1>Index</h1>`
 });
+
+router.get('/api', async (ctx, next) => {
+  var result;
+  await Article.find((err, _result) => {
+    result = _result;
+    console.log(result);
+  });
+  ctx.response.body = result;
+})
 
 app.use(router.routes());
 
